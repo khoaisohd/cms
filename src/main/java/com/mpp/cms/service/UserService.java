@@ -146,6 +146,10 @@ public class UserService {
         user.setActivated(true);
         userRepository.save(user);
         log.debug("Created Information for User: {}", user);
+
+        Student student = new Student();
+        student.setId(user.getId());
+        studentRepository.save(student);
         return user;
     }
 
@@ -201,6 +205,7 @@ public class UserService {
         userRepository.findOneByLogin(login).ifPresent(user -> {
             socialService.deleteUserSocialConnection(user.getLogin());
             userRepository.delete(user);
+            studentRepository.delete(studentRepository.findOne(user.getId()));
             log.debug("Deleted User: {}", user);
         });
     }

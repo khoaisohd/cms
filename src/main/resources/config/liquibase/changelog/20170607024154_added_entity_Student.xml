@@ -19,11 +19,15 @@
     -->
     <changeSet id="20170607024154-1" author="jhipster">
         <createTable tableName="student">
-            <column name="id" type="bigint">
+            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
+            <column name="department_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-
+        
     </changeSet>
 </databaseChangeLog>

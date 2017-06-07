@@ -17,6 +17,8 @@ public class Student implements Serializable {
     @Id
     private Long id;
 
+    @ManyToOne
+    private Department department;
 
     public Long getId() {
         return id;
@@ -24,6 +26,19 @@ public class Student implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public Student department(Department department) {
+        this.department = department;
+        return this;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
     }
 
     @Override

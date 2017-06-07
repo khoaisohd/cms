@@ -1,6 +1,12 @@
 {
     "fluentMethods": true,
     "relationships": [
+        {
+            "relationshipName": "department",
+            "otherEntityName": "department",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "name"
+        }
     ],
     "fields": [],
     "changelogDate": "20170607024154",

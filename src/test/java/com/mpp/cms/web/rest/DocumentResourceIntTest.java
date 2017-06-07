@@ -4,8 +4,6 @@ import com.mpp.cms.CmsApp;
 
 import com.mpp.cms.domain.Document;
 import com.mpp.cms.repository.DocumentRepository;
-import com.mpp.cms.service.dto.DocumentDTO;
-import com.mpp.cms.service.mapper.DocumentMapper;
 import com.mpp.cms.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -49,9 +47,6 @@ public class DocumentResourceIntTest {
     private DocumentRepository documentRepository;
 
     @Autowired
-    private DocumentMapper documentMapper;
-
-    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -70,7 +65,7 @@ public class DocumentResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        DocumentResource documentResource = new DocumentResource(documentRepository, documentMapper);
+        DocumentResource documentResource = new DocumentResource(documentRepository);
         this.restDocumentMockMvc = MockMvcBuilders.standaloneSetup(documentResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -101,10 +96,9 @@ public class DocumentResourceIntTest {
         int databaseSizeBeforeCreate = documentRepository.findAll().size();
 
         // Create the Document
-        DocumentDTO documentDTO = documentMapper.toDto(document);
         restDocumentMockMvc.perform(post("/api/documents")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(documentDTO)))
+            .content(TestUtil.convertObjectToJsonBytes(document)))
             .andExpect(status().isCreated());
 
         // Validate the Document in the database
@@ -122,12 +116,11 @@ public class DocumentResourceIntTest {
 
         // Create the Document with an existing ID
         document.setId(1L);
-        DocumentDTO documentDTO = documentMapper.toDto(document);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restDocumentMockMvc.perform(post("/api/documents")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(documentDTO)))
+            .content(TestUtil.convertObjectToJsonBytes(document)))
             .andExpect(status().isBadRequest());
 
         // Validate the Alice in the database
@@ -143,11 +136,10 @@ public class DocumentResourceIntTest {
         document.setUrl(null);
 
         // Create the Document, which fails.
-        DocumentDTO documentDTO = documentMapper.toDto(document);
 
         restDocumentMockMvc.perform(post("/api/documents")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(documentDTO)))
+            .content(TestUtil.convertObjectToJsonBytes(document)))
             .andExpect(status().isBadRequest());
 
         List<Document> documentList = documentRepository.findAll();
@@ -162,11 +154,10 @@ public class DocumentResourceIntTest {
         document.setName(null);
 
         // Create the Document, which fails.
-        DocumentDTO documentDTO = documentMapper.toDto(document);
 
         restDocumentMockMvc.perform(post("/api/documents")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(documentDTO)))
+            .content(TestUtil.convertObjectToJsonBytes(document)))
             .andExpect(status().isBadRequest());
 
         List<Document> documentList = documentRepository.findAll();
@@ -223,11 +214,10 @@ public class DocumentResourceIntTest {
         updatedDocument
             .url(UPDATED_URL)
             .name(UPDATED_NAME);
-        DocumentDTO documentDTO = documentMapper.toDto(updatedDocument);
 
         restDocumentMockMvc.perform(put("/api/documents")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(documentDTO)))
+            .content(TestUtil.convertObjectToJsonBytes(updatedDocument)))
             .andExpect(status().isOk());
 
         // Validate the Document in the database
@@ -244,12 +234,11 @@ public class DocumentResourceIntTest {
         int databaseSizeBeforeUpdate = documentRepository.findAll().size();
 
         // Create the Document
-        DocumentDTO documentDTO = documentMapper.toDto(document);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
         restDocumentMockMvc.perform(put("/api/documents")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(documentDTO)))
+            .content(TestUtil.convertObjectToJsonBytes(document)))
             .andExpect(status().isCreated());
 
         // Validate the Document in the database
@@ -287,28 +276,5 @@ public class DocumentResourceIntTest {
         assertThat(document1).isNotEqualTo(document2);
         document1.setId(null);
         assertThat(document1).isNotEqualTo(document2);
-    }
-
-    @Test
-    @Transactional
-    public void dtoEqualsVerifier() throws Exception {
-        TestUtil.equalsVerifier(DocumentDTO.class);
-        DocumentDTO documentDTO1 = new DocumentDTO();
-        documentDTO1.setId(1L);
-        DocumentDTO documentDTO2 = new DocumentDTO();
-        assertThat(documentDTO1).isNotEqualTo(documentDTO2);
-        documentDTO2.setId(documentDTO1.getId());
-        assertThat(documentDTO1).isEqualTo(documentDTO2);
-        documentDTO2.setId(2L);
-        assertThat(documentDTO1).isNotEqualTo(documentDTO2);
-        documentDTO1.setId(null);
-        assertThat(documentDTO1).isNotEqualTo(documentDTO2);
-    }
-
-    @Test
-    @Transactional
-    public void testEntityFromId() {
-        assertThat(documentMapper.fromId(42L).getId()).isEqualTo(42);
-        assertThat(documentMapper.fromId(null)).isNull();
     }
 }

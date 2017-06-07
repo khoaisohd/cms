@@ -4,6 +4,7 @@ import { CmsDepartmentModule } from './department/department.module';
 import { CmsStudentModule } from './student/student.module';
 import { CmsDocumentModule } from './document/document.module';
 import { CmsReferenceModule } from './reference/reference.module';
+import { CmsCourseModule } from './course/course.module';
 /* jhipster-needle-add-entity-module-import - JHipster will add entity modules imports here */
 
 @NgModule({
@@ -12,6 +13,7 @@ import { CmsReferenceModule } from './reference/reference.module';
         CmsStudentModule,
         CmsDocumentModule,
         CmsReferenceModule,
+        CmsCourseModule,
         /* jhipster-needle-add-entity-module - JHipster will add entity modules here */
     ],
     declarations: [],

@@ -19,6 +19,7 @@
             <th><span>ID</span></th>
             <th><span>Url</span></th>
             <th><span>Name</span></th>
+            <th><span>Course</span></th>
             <th></th>
             </tr>
             </thead>
@@ -27,6 +28,11 @@
                 <td><a [routerLink]="['../reference', reference.id ]">{{reference.id}}</a></td>
                 <td>{{reference.url}}</td>
                 <td>{{reference.name}}</td>
+                <td>
+                    <div *ngIf="reference.course">
+                        <a [routerLink]="['../course', reference.course?.id ]" >{{reference.course?.name}}</a>
+                    </div>
+                </td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"

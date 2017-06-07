@@ -5,8 +5,6 @@ import com.mpp.cms.domain.Document;
 
 import com.mpp.cms.repository.DocumentRepository;
 import com.mpp.cms.web.rest.util.HeaderUtil;
-import com.mpp.cms.service.dto.DocumentDTO;
-import com.mpp.cms.service.mapper.DocumentMapper;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,30 +31,25 @@ public class DocumentResource {
 
     private final DocumentRepository documentRepository;
 
-    private final DocumentMapper documentMapper;
-
-    public DocumentResource(DocumentRepository documentRepository, DocumentMapper documentMapper) {
+    public DocumentResource(DocumentRepository documentRepository) {
         this.documentRepository = documentRepository;
-        this.documentMapper = documentMapper;
     }
 
     /**
      * POST  /documents : Create a new document.
      *
-     * @param documentDTO the documentDTO to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new documentDTO, or with status 400 (Bad Request) if the document has already an ID
+     * @param document the document to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new document, or with status 400 (Bad Request) if the document has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/documents")
     @Timed
-    public ResponseEntity<DocumentDTO> createDocument(@Valid @RequestBody DocumentDTO documentDTO) throws URISyntaxException {
-        log.debug("REST request to save Document : {}", documentDTO);
-        if (documentDTO.getId() != null) {
+    public ResponseEntity<Document> createDocument(@Valid @RequestBody Document document) throws URISyntaxException {
+        log.debug("REST request to save Document : {}", document);
+        if (document.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new document cannot already have an ID")).body(null);
         }
-        Document document = documentMapper.toEntity(documentDTO);
-        document = documentRepository.save(document);
-        DocumentDTO result = documentMapper.toDto(document);
+        Document result = documentRepository.save(document);
         return ResponseEntity.created(new URI("/api/documents/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -65,24 +58,22 @@ public class DocumentResource {
     /**
      * PUT  /documents : Updates an existing document.
      *
-     * @param documentDTO the documentDTO to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated documentDTO,
-     * or with status 400 (Bad Request) if the documentDTO is not valid,
-     * or with status 500 (Internal Server Error) if the documentDTO couldnt be updated
+     * @param document the document to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated document,
+     * or with status 400 (Bad Request) if the document is not valid,
+     * or with status 500 (Internal Server Error) if the document couldnt be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/documents")
     @Timed
-    public ResponseEntity<DocumentDTO> updateDocument(@Valid @RequestBody DocumentDTO documentDTO) throws URISyntaxException {
-        log.debug("REST request to update Document : {}", documentDTO);
-        if (documentDTO.getId() == null) {
-            return createDocument(documentDTO);
+    public ResponseEntity<Document> updateDocument(@Valid @RequestBody Document document) throws URISyntaxException {
+        log.debug("REST request to update Document : {}", document);
+        if (document.getId() == null) {
+            return createDocument(document);
         }
-        Document document = documentMapper.toEntity(documentDTO);
-        document = documentRepository.save(document);
-        DocumentDTO result = documentMapper.toDto(document);
+        Document result = documentRepository.save(document);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, documentDTO.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, document.getId().toString()))
             .body(result);
     }
 
@@ -93,31 +84,29 @@ public class DocumentResource {
      */
     @GetMapping("/documents")
     @Timed
-    public List<DocumentDTO> getAllDocuments() {
+    public List<Document> getAllDocuments() {
         log.debug("REST request to get all Documents");
-        List<Document> documents = documentRepository.findAll();
-        return documentMapper.toDto(documents);
+        return documentRepository.findAll();
     }
 
     /**
      * GET  /documents/:id : get the "id" document.
      *
-     * @param id the id of the documentDTO to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the documentDTO, or with status 404 (Not Found)
+     * @param id the id of the document to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the document, or with status 404 (Not Found)
      */
     @GetMapping("/documents/{id}")
     @Timed
-    public ResponseEntity<DocumentDTO> getDocument(@PathVariable Long id) {
+    public ResponseEntity<Document> getDocument(@PathVariable Long id) {
         log.debug("REST request to get Document : {}", id);
         Document document = documentRepository.findOne(id);
-        DocumentDTO documentDTO = documentMapper.toDto(document);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(documentDTO));
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(document));
     }
 
     /**
      * DELETE  /documents/:id : delete the "id" document.
      *
-     * @param id the id of the documentDTO to delete
+     * @param id the id of the document to delete
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/documents/{id}")

@@ -9,6 +9,8 @@ import { EventManager, AlertService } from 'ng-jhipster';
 import { Reference } from './reference.model';
 import { ReferencePopupService } from './reference-popup.service';
 import { ReferenceService } from './reference.service';
+import { Course, CourseService } from '../course';
+import { ResponseWrapper } from '../../shared';
 
 @Component({
     selector: 'jhi-reference-dialog',
@@ -20,10 +22,13 @@ export class ReferenceDialogComponent implements OnInit {
     authorities: any[];
     isSaving: boolean;
 
+    courses: Course[];
+
     constructor(
         public activeModal: NgbActiveModal,
         private alertService: AlertService,
         private referenceService: ReferenceService,
+        private courseService: CourseService,
         private eventManager: EventManager
     ) {
     }
@@ -31,6 +36,8 @@ export class ReferenceDialogComponent implements OnInit {
     ngOnInit() {
         this.isSaving = false;
         this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
+        this.courseService.query()
+            .subscribe((res: ResponseWrapper) => { this.courses = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
     }
     clear() {
         this.activeModal.dismiss('cancel');
@@ -75,6 +82,10 @@ export class ReferenceDialogComponent implements OnInit {
 
     private onError(error) {
         this.alertService.error(error.message, null, null);
+    }
+
+    trackCourseById(index: number, item: Course) {
+        return item.id;
     }
 }
 

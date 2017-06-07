@@ -6,33 +6,33 @@ import { Observable } from 'rxjs/Rx';
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { EventManager, AlertService } from 'ng-jhipster';
 
-import { Student } from './student.model';
-import { StudentPopupService } from './student-popup.service';
-import { StudentService } from './student.service';
+import { Course } from './course.model';
+import { CoursePopupService } from './course-popup.service';
+import { CourseService } from './course.service';
 import { Department, DepartmentService } from '../department';
-import { Course, CourseService } from '../course';
+import { Student, StudentService } from '../student';
 import { ResponseWrapper } from '../../shared';
 
 @Component({
-    selector: 'jhi-student-dialog',
-    templateUrl: './student-dialog.component.html'
+    selector: 'jhi-course-dialog',
+    templateUrl: './course-dialog.component.html'
 })
-export class StudentDialogComponent implements OnInit {
+export class CourseDialogComponent implements OnInit {
 
-    student: Student;
+    course: Course;
     authorities: any[];
     isSaving: boolean;
 
     departments: Department[];
 
-    courses: Course[];
+    students: Student[];
 
     constructor(
         public activeModal: NgbActiveModal,
         private alertService: AlertService,
-        private studentService: StudentService,
-        private departmentService: DepartmentService,
         private courseService: CourseService,
+        private departmentService: DepartmentService,
+        private studentService: StudentService,
         private eventManager: EventManager
     ) {
     }
@@ -42,8 +42,8 @@ export class StudentDialogComponent implements OnInit {
         this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
         this.departmentService.query()
             .subscribe((res: ResponseWrapper) => { this.departments = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
-        this.courseService.query()
-            .subscribe((res: ResponseWrapper) => { this.courses = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
+        this.studentService.query()
+            .subscribe((res: ResponseWrapper) => { this.students = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
     }
     clear() {
         this.activeModal.dismiss('cancel');
@@ -51,27 +51,27 @@ export class StudentDialogComponent implements OnInit {
 
     save() {
         this.isSaving = true;
-        if (this.student.id !== undefined) {
+        if (this.course.id !== undefined) {
             this.subscribeToSaveResponse(
-                this.studentService.update(this.student), false);
+                this.courseService.update(this.course), false);
         } else {
             this.subscribeToSaveResponse(
-                this.studentService.create(this.student), true);
+                this.courseService.create(this.course), true);
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<Student>, isCreated: boolean) {
-        result.subscribe((res: Student) =>
+    private subscribeToSaveResponse(result: Observable<Course>, isCreated: boolean) {
+        result.subscribe((res: Course) =>
             this.onSaveSuccess(res, isCreated), (res: Response) => this.onSaveError(res));
     }
 
-    private onSaveSuccess(result: Student, isCreated: boolean) {
+    private onSaveSuccess(result: Course, isCreated: boolean) {
         this.alertService.success(
-            isCreated ? `A new Student is created with identifier ${result.id}`
-            : `A Student is updated with identifier ${result.id}`,
+            isCreated ? `A new Course is created with identifier ${result.id}`
+            : `A Course is updated with identifier ${result.id}`,
             null, null);
 
-        this.eventManager.broadcast({ name: 'studentListModification', content: 'OK'});
+        this.eventManager.broadcast({ name: 'courseListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
@@ -94,7 +94,7 @@ export class StudentDialogComponent implements OnInit {
         return item.id;
     }
 
-    trackCourseById(index: number, item: Course) {
+    trackStudentById(index: number, item: Student) {
         return item.id;
     }
 
@@ -111,27 +111,27 @@ export class StudentDialogComponent implements OnInit {
 }
 
 @Component({
-    selector: 'jhi-student-popup',
+    selector: 'jhi-course-popup',
     template: ''
 })
-export class StudentPopupComponent implements OnInit, OnDestroy {
+export class CoursePopupComponent implements OnInit, OnDestroy {
 
     modalRef: NgbModalRef;
     routeSub: any;
 
     constructor(
         private route: ActivatedRoute,
-        private studentPopupService: StudentPopupService
+        private coursePopupService: CoursePopupService
     ) {}
 
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
             if ( params['id'] ) {
-                this.modalRef = this.studentPopupService
-                    .open(StudentDialogComponent, params['id']);
+                this.modalRef = this.coursePopupService
+                    .open(CourseDialogComponent, params['id']);
             } else {
-                this.modalRef = this.studentPopupService
-                    .open(StudentDialogComponent);
+                this.modalRef = this.coursePopupService
+                    .open(CourseDialogComponent);
             }
         });
     }

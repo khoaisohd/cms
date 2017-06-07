@@ -27,6 +27,9 @@ public class Document implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @ManyToOne
+    private Course course;
+
     public Long getId() {
         return id;
     }
@@ -59,6 +62,19 @@ public class Document implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public Document course(Course course) {
+        this.course = course;
+        return this;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
     }
 
     @Override

@@ -1,0 +1,59 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "reference",
+            "otherEntityName": "reference",
+            "relationshipType": "one-to-many",
+            "otherEntityRelationshipName": "course"
+        },
+        {
+            "relationshipName": "document",
+            "otherEntityName": "document",
+            "relationshipType": "one-to-many",
+            "otherEntityRelationshipName": "course"
+        },
+        {
+            "relationshipName": "department",
+            "otherEntityName": "department",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "name"
+        },
+        {
+            "relationshipName": "student",
+            "otherEntityName": "student",
+            "relationshipType": "many-to-many",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "course"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "code",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20170607051748",
+    "dto": "no",
+    "service": "serviceClass",
+    "entityTableName": "course",
+    "pagination": "no"
+}

@@ -27,6 +27,9 @@ public class Reference implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @ManyToOne
+    private Course course;
+
     public Long getId() {
         return id;
     }
@@ -59,6 +62,19 @@ public class Reference implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public Reference course(Course course) {
+        this.course = course;
+        return this;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
     }
 
     @Override

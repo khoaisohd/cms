@@ -1,9 +1,12 @@
 package com.mpp.cms.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -22,6 +25,10 @@ public class Department implements Serializable {
     @NotNull
     @Column(name = "name", nullable = false)
     private String name;
+
+    @OneToMany(mappedBy = "department")
+    @JsonIgnore
+    private Set<Course> courses = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -42,6 +49,31 @@ public class Department implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Set<Course> getCourses() {
+        return courses;
+    }
+
+    public Department courses(Set<Course> courses) {
+        this.courses = courses;
+        return this;
+    }
+
+    public Department addCourse(Course course) {
+        this.courses.add(course);
+        course.setDepartment(this);
+        return this;
+    }
+
+    public Department removeCourse(Course course) {
+        this.courses.remove(course);
+        course.setDepartment(null);
+        return this;
+    }
+
+    public void setCourses(Set<Course> courses) {
+        this.courses = courses;
     }
 
     @Override

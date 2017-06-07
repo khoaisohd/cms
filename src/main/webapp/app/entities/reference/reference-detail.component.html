@@ -12,6 +12,12 @@
         <dd>
             <span>{{reference.name}}</span>
         </dd>
+        <dt><span>Course</span></dt>
+        <dd>
+            <div *ngIf="reference.course">
+                <a [routerLink]="['/course', reference.course?.id]">{{reference.course?.name}}</a>
+            </div>
+        </dd>
     </dl>
 
     <button type="submit"

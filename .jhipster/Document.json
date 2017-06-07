@@ -1,6 +1,13 @@
 {
     "fluentMethods": true,
-    "relationships": [],
+    "relationships": [
+        {
+            "relationshipName": "course",
+            "otherEntityName": "course",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "name"
+        }
+    ],
     "fields": [
         {
             "fieldName": "url",
@@ -18,7 +25,7 @@
         }
     ],
     "changelogDate": "20170607040803",
-    "dto": "mapstruct",
+    "dto": "no",
     "service": "no",
     "entityTableName": "document",
     "pagination": "no"

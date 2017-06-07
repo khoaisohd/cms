@@ -112,6 +112,7 @@ public class UserService {
         userRepository.save(newUser);
         log.debug("Created Information for User: {}", newUser);
 
+        // 4 dong nay la cua anh
         Student student = new Student();
         student.setId(newUser.getId());
         studentRepository.save(student);

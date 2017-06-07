@@ -11,7 +11,7 @@ export class Course {
         public reference?: Reference,
         public document?: Document,
         public department?: Department,
-        public student?: Student,
+        public students?: Student[],
     ) {
     }
 }

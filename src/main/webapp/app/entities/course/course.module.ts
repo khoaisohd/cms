@@ -13,6 +13,7 @@ import {
     CourseDeleteDialogComponent,
     courseRoute,
     coursePopupRoute,
+    CourseCatalogComponent,
 } from './';
 
 const ENTITY_STATES = [
@@ -32,6 +33,7 @@ const ENTITY_STATES = [
         CourseDeleteDialogComponent,
         CoursePopupComponent,
         CourseDeletePopupComponent,
+        CourseCatalogComponent,
     ],
     entryComponents: [
         CourseComponent,

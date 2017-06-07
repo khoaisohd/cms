@@ -1,0 +1,29 @@
+<h1>Course catalog</h1>
+<div *ngFor="let course of courses" class="course-content">
+    <div id="accordion" role="tablist" aria-multiselectable="true">
+        <div class="card">
+            <div class="card-header" role="tab" id="headingOne">
+                <h5 class="mb-0">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        {{course.code}}
+                    </a>
+                </h5>
+            </div>
+
+            <div id="collapseOne" class="collapse show course-content" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-block">
+                    {{course.name}}<br>
+                    {{course.description}}<br>
+                </div>
+                <div *ngIf="isEnrolled(course); else elseBlock">
+                    <span class="badge badge-success course-enrolled">Enrolled</span>
+                </div>
+
+                <ng-template #elseBlock>
+                    <button class="btn btn-primary course-enrolled">Register</button>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+</div>
+

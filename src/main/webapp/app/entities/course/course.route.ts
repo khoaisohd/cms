@@ -8,10 +8,15 @@ import { CourseComponent } from './course.component';
 import { CourseDetailComponent } from './course-detail.component';
 import { CoursePopupComponent } from './course-dialog.component';
 import { CourseDeletePopupComponent } from './course-delete-dialog.component';
+import { CourseCatalogComponent } from './course-catalog.component';
 
 import { Principal } from '../../shared';
 
 export const courseRoute: Routes = [
+    {
+        path:'course-catalog',
+        component: CourseCatalogComponent,
+    },
     {
         path: 'course',
         component: CourseComponent,

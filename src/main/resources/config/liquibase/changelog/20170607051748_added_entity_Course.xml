@@ -34,6 +34,10 @@
                 <constraints nullable="false" />
             </column>
 
+            <column name="prerequiste" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
             <column name="department_id" type="bigint">
                 <constraints nullable="true" />
             </column>

@@ -49,6 +49,10 @@
             "fieldValidateRules": [
                 "required"
             ]
+        },
+        {
+            "fieldName": "prerequiste",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20170607051748",

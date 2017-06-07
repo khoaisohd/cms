@@ -3,6 +3,7 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CmsDepartmentModule } from './department/department.module';
 import { CmsStudentModule } from './student/student.module';
 import { CmsDocumentModule } from './document/document.module';
+import { CmsReferenceModule } from './reference/reference.module';
 /* jhipster-needle-add-entity-module-import - JHipster will add entity modules imports here */
 
 @NgModule({
@@ -10,6 +11,7 @@ import { CmsDocumentModule } from './document/document.module';
         CmsDepartmentModule,
         CmsStudentModule,
         CmsDocumentModule,
+        CmsReferenceModule,
         /* jhipster-needle-add-entity-module - JHipster will add entity modules here */
     ],
     declarations: [],

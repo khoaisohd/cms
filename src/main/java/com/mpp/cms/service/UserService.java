@@ -1,9 +1,11 @@
 package com.mpp.cms.service;
 
 import com.mpp.cms.domain.Authority;
+import com.mpp.cms.domain.Student;
 import com.mpp.cms.domain.User;
 import com.mpp.cms.repository.AuthorityRepository;
 import com.mpp.cms.config.Constants;
+import com.mpp.cms.repository.StudentRepository;
 import com.mpp.cms.repository.UserRepository;
 import com.mpp.cms.security.AuthoritiesConstants;
 import com.mpp.cms.security.SecurityUtils;
@@ -35,17 +37,20 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    private final StudentRepository studentRepository;
+
     private final PasswordEncoder passwordEncoder;
 
     private final SocialService socialService;
 
     private final AuthorityRepository authorityRepository;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, SocialService socialService, AuthorityRepository authorityRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, SocialService socialService, AuthorityRepository authorityRepository, StudentRepository studentRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.socialService = socialService;
         this.authorityRepository = authorityRepository;
+        this.studentRepository = studentRepository;
     }
 
     public Optional<User> activateRegistration(String key) {
@@ -106,6 +111,12 @@ public class UserService {
         newUser.setAuthorities(authorities);
         userRepository.save(newUser);
         log.debug("Created Information for User: {}", newUser);
+
+        Student student = new Student();
+        student.setId(newUser.getId());
+        studentRepository.save(student);
+        log.debug("Created Information for Student: {}");
+
         return newUser;
     }
 

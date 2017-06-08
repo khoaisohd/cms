@@ -1,0 +1,38 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "course",
+            "otherEntityName": "course",
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": [
+                "required"
+            ],
+            "otherEntityField": "code"
+        },
+        {
+            "relationshipName": "student",
+            "otherEntityName": "student",
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": [
+                "required"
+            ],
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "status",
+            "fieldType": "Status",
+            "fieldValues": "FAILED, IN_PROGRESS, PASSED",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20170607190602",
+    "dto": "no",
+    "service": "no",
+    "entityTableName": "grade_report",
+    "pagination": "no"
+}

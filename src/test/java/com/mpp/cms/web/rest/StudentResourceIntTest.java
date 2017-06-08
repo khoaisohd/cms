@@ -37,6 +37,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = CmsApp.class)
 public class StudentResourceIntTest {
 
+    private static final String DEFAULT_FIRST_NAME = "AAAAAAAAAA";
+    private static final String UPDATED_FIRST_NAME = "BBBBBBBBBB";
+
+    private static final String DEFAULT_LAST_NAME = "AAAAAAAAAA";
+    private static final String UPDATED_LAST_NAME = "BBBBBBBBBB";
+
     @Autowired
     private StudentRepository studentRepository;
 
@@ -73,7 +79,9 @@ public class StudentResourceIntTest {
      * if they test an entity which requires the current entity.
      */
     public static Student createEntity(EntityManager em) {
-        Student student = new Student();
+        Student student = new Student()
+            .firstName(DEFAULT_FIRST_NAME)
+            .lastName(DEFAULT_LAST_NAME);
         return student;
     }
 
@@ -97,6 +105,8 @@ public class StudentResourceIntTest {
         List<Student> studentList = studentRepository.findAll();
         assertThat(studentList).hasSize(databaseSizeBeforeCreate + 1);
         Student testStudent = studentList.get(studentList.size() - 1);
+        assertThat(testStudent.getFirstName()).isEqualTo(DEFAULT_FIRST_NAME);
+        assertThat(testStudent.getLastName()).isEqualTo(DEFAULT_LAST_NAME);
     }
 
     @Test
@@ -120,6 +130,42 @@ public class StudentResourceIntTest {
 
     @Test
     @Transactional
+    public void checkFirstNameIsRequired() throws Exception {
+        int databaseSizeBeforeTest = studentRepository.findAll().size();
+        // set the field null
+        student.setFirstName(null);
+
+        // Create the Student, which fails.
+
+        restStudentMockMvc.perform(post("/api/students")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(student)))
+            .andExpect(status().isBadRequest());
+
+        List<Student> studentList = studentRepository.findAll();
+        assertThat(studentList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkLastNameIsRequired() throws Exception {
+        int databaseSizeBeforeTest = studentRepository.findAll().size();
+        // set the field null
+        student.setLastName(null);
+
+        // Create the Student, which fails.
+
+        restStudentMockMvc.perform(post("/api/students")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(student)))
+            .andExpect(status().isBadRequest());
+
+        List<Student> studentList = studentRepository.findAll();
+        assertThat(studentList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllStudents() throws Exception {
         // Initialize the database
         studentRepository.saveAndFlush(student);
@@ -128,7 +174,9 @@ public class StudentResourceIntTest {
         restStudentMockMvc.perform(get("/api/students?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(student.getId().intValue())));
+            .andExpect(jsonPath("$.[*].id").value(hasItem(student.getId().intValue())))
+            .andExpect(jsonPath("$.[*].firstName").value(hasItem(DEFAULT_FIRST_NAME.toString())))
+            .andExpect(jsonPath("$.[*].lastName").value(hasItem(DEFAULT_LAST_NAME.toString())));
     }
 
     @Test
@@ -141,7 +189,9 @@ public class StudentResourceIntTest {
         restStudentMockMvc.perform(get("/api/students/{id}", student.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.id").value(student.getId().intValue()));
+            .andExpect(jsonPath("$.id").value(student.getId().intValue()))
+            .andExpect(jsonPath("$.firstName").value(DEFAULT_FIRST_NAME.toString()))
+            .andExpect(jsonPath("$.lastName").value(DEFAULT_LAST_NAME.toString()));
     }
 
     @Test
@@ -161,6 +211,9 @@ public class StudentResourceIntTest {
 
         // Update the student
         Student updatedStudent = studentRepository.findOne(student.getId());
+        updatedStudent
+            .firstName(UPDATED_FIRST_NAME)
+            .lastName(UPDATED_LAST_NAME);
 
         restStudentMockMvc.perform(put("/api/students")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -171,6 +224,8 @@ public class StudentResourceIntTest {
         List<Student> studentList = studentRepository.findAll();
         assertThat(studentList).hasSize(databaseSizeBeforeUpdate);
         Student testStudent = studentList.get(studentList.size() - 1);
+        assertThat(testStudent.getFirstName()).isEqualTo(UPDATED_FIRST_NAME);
+        assertThat(testStudent.getLastName()).isEqualTo(UPDATED_LAST_NAME);
     }
 
     @Test

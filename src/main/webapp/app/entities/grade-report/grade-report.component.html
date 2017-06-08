@@ -1,10 +1,10 @@
 <div>
     <h2>
-        <span>Courses</span>
-        <button class="btn btn-primary float-right create-course" [routerLink]="['/', { outlets: { popup: ['course-new'] } }]">
+        <span>Grade Reports</span>
+        <button class="btn btn-primary float-right create-grade-report" [routerLink]="['/', { outlets: { popup: ['grade-report-new'] } }]">
             <span class="fa fa-plus"></span>
             <span >
-            Create new Course
+            Create new Grade Report
             </span>
         </button>
     </h2>
@@ -12,54 +12,48 @@
     <div class="row">
     </div>
     <br/>
-    <div class="table-responsive" *ngIf="courses">
+    <div class="table-responsive" *ngIf="gradeReports">
         <table class="table table-striped">
             <thead>
             <tr>
             <th><span>ID</span></th>
-            <th><span>Code</span></th>
-            <th><span>Name</span></th>
-            <th><span>Description</span></th>
-            <th><span>Prerequiste</span></th>
-            <th><span>Department</span></th>
+            <th><span>Status</span></th>
+            <th><span>Course</span></th>
             <th><span>Student</span></th>
             <th></th>
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let course of courses ;trackBy: trackId">
-                <td><a [routerLink]="['../course', course.id ]">{{course.id}}</a></td>
-                <td>{{course.code}}</td>
-                <td>{{course.name}}</td>
-                <td>{{course.description}}</td>
-                <td>{{course.prerequiste}}</td>
+            <tr *ngFor="let gradeReport of gradeReports ;trackBy: trackId">
+                <td><a [routerLink]="['../grade-report', gradeReport.id ]">{{gradeReport.id}}</a></td>
+                <td>{{gradeReport.status}}</td>
                 <td>
-                    <div *ngIf="course.department">
-                        <a [routerLink]="['../department', course.department?.id ]" >{{course.department?.name}}</a>
+                    <div *ngIf="gradeReport.course">
+                        <a [routerLink]="['../course', gradeReport.course?.id ]" >{{gradeReport.course?.code}}</a>
                     </div>
                 </td>
                 <td>
-                    <span *ngFor="let student of course.students; let last = last">
-                            <a class="form-control-static" [routerLink]="['../student', student?.id ]">{{student.id}}</a>{{last ? '' : ', '}}
-                        </span>
+                    <div *ngIf="gradeReport.student">
+                        <a [routerLink]="['../student', gradeReport.student?.id ]" >{{gradeReport.student?.id}}</a>
+                    </div>
                 </td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"
-                                [routerLink]="['../course', course.id ]"
+                                [routerLink]="['../grade-report', gradeReport.id ]"
                                 class="btn btn-info btn-sm">
                             <span class="fa fa-eye"></span>
                             <span class="hidden-md-down">View</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'course/'+ course.id + '/edit'} }]"
+                                [routerLink]="['/', { outlets: { popup: 'grade-report/'+ gradeReport.id + '/edit'} }]"
                                 replaceUrl="true"
                                 class="btn btn-primary btn-sm">
                             <span class="fa fa-pencil"></span>
                             <span class="hidden-md-down">Edit</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'course/'+ course.id + '/delete'} }]"
+                                [routerLink]="['/', { outlets: { popup: 'grade-report/'+ gradeReport.id + '/delete'} }]"
                                 replaceUrl="true"
                                 class="btn btn-danger btn-sm">
                             <span class="fa fa-remove"></span>

@@ -10,10 +10,12 @@
     <include file="classpath:config/liquibase/changelog/20170607040803_added_entity_Document.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170607043300_added_entity_Reference.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170607051748_added_entity_Course.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170607190602_added_entity_GradeReport.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="classpath:config/liquibase/changelog/20170607024154_added_entity_constraints_Student.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170607051748_added_entity_constraints_Course.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170607043300_added_entity_constraints_Reference.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170607040803_added_entity_constraints_Document.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170607190602_added_entity_constraints_GradeReport.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

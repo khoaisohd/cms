@@ -34,6 +34,9 @@ public class Course implements Serializable {
     @Column(name = "description", nullable = false)
     private String description;
 
+    @Column(name = "prerequiste")
+    private String prerequiste;
+
     @OneToMany(mappedBy = "course")
     @JsonIgnore
     private Set<Reference> references = new HashSet<>();
@@ -96,6 +99,19 @@ public class Course implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getPrerequiste() {
+        return prerequiste;
+    }
+
+    public Course prerequiste(String prerequiste) {
+        this.prerequiste = prerequiste;
+        return this;
+    }
+
+    public void setPrerequiste(String prerequiste) {
+        this.prerequiste = prerequiste;
     }
 
     public Set<Reference> getReferences() {
@@ -213,6 +229,7 @@ public class Course implements Serializable {
             ", code='" + getCode() + "'" +
             ", name='" + getName() + "'" +
             ", description='" + getDescription() + "'" +
+            ", prerequiste='" + getPrerequiste() + "'" +
             "}";
     }
 }

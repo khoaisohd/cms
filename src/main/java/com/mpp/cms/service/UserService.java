@@ -112,8 +112,11 @@ public class UserService {
         userRepository.save(newUser);
         log.debug("Created Information for User: {}", newUser);
 
+        // 4 dong nay la cua anh
         Student student = new Student();
         student.setId(newUser.getId());
+        student.setFirstName(newUser.getFirstName());
+        student.setLastName(newUser.getLastName());
         studentRepository.save(student);
         log.debug("Created Information for Student: {}");
 
@@ -147,8 +150,11 @@ public class UserService {
         userRepository.save(user);
         log.debug("Created Information for User: {}", user);
 
+        // 4 dong nay cua anh
         Student student = new Student();
         student.setId(user.getId());
+        student.setFirstName(user.getFirstName());
+        student.setLastName(user.getLastName());
         studentRepository.save(student);
         return user;
     }

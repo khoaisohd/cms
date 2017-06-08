@@ -8,6 +8,7 @@ export class Course {
         public code?: string,
         public name?: string,
         public description?: string,
+        public prerequiste?: string,
         public reference?: Reference,
         public document?: Document,
         public department?: Department,

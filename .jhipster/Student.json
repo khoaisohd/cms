@@ -15,7 +15,22 @@
             "otherEntityRelationshipName": "student"
         }
     ],
-    "fields": [],
+    "fields": [
+        {
+            "fieldName": "firstName",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "lastName",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
     "changelogDate": "20170607024154",
     "dto": "no",
     "service": "no",

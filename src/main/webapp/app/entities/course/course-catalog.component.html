@@ -5,14 +5,13 @@
             <div class="card-header" role="tab" id="headingOne">
                 <h5 class="mb-0">
                     <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                        <a [routerLink]="['../course-content', course.id ]">{{course.code}}</a>
+                        <a [routerLink]="['../course-content', course.id ]">{{course.code}} - {{course.name}}</a>
                     </a>
                 </h5>
             </div>
 
             <div id="collapseOne" class="collapse show course-content" role="tabpanel" aria-labelledby="headingOne">
                 <div class="card-block">
-                    {{course.name}}<br>
                     {{course.description}}<br>
                 </div>
                 <div *ngIf="isEnrolled(course); else elseBlock">

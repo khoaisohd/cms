@@ -4,6 +4,14 @@
     <hr>
     <jhi-alert-error></jhi-alert-error>
     <dl class="row-md jh-entity-details">
+        <dt><span>First Name</span></dt>
+        <dd>
+            <span>{{student.firstName}}</span>
+        </dd>
+        <dt><span>Last Name</span></dt>
+        <dd>
+            <span>{{student.lastName}}</span>
+        </dd>
         <dt><span>Department</span></dt>
         <dd>
             <div *ngIf="student.department">

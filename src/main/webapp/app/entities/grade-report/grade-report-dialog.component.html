@@ -39,6 +39,18 @@
                 This field is required.
             </small>
         </div>
+        <div class="form-group">
+            <label for="field_student">Student</label>
+            <select class="form-control" id="field_student" name="student" [(ngModel)]="gradeReport.student"  required>
+                <option [ngValue]="studentOption.id === gradeReport.student?.id ? gradeReport.student : studentOption" *ngFor="let studentOption of students; trackBy: trackStudentById">{{studentOption.id}}</option>
+            </select>
+        </div>
+        <div [hidden]="!(editForm.controls.student?.dirty && editForm.controls.student?.invalid)">
+            <small class="form-text text-danger"
+                [hidden]="!editForm.controls.student?.errors?.required">
+                This field is required.
+            </small>
+        </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal" (click)="clear()">

@@ -1,20 +1,12 @@
 package com.mpp.cms.domain;
 
 
-import com.mpp.cms.domain.enumeration.Status;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
+
+import com.mpp.cms.domain.enumeration.Status;
 
 /**
  * A GradeReport.
@@ -37,6 +29,10 @@ public class GradeReport implements Serializable {
     @ManyToOne(optional = false)
     @NotNull
     private Course course;
+
+    @ManyToOne(optional = false)
+    @NotNull
+    private Student student;
 
     public Long getId() {
         return id;
@@ -63,13 +59,26 @@ public class GradeReport implements Serializable {
         return course;
     }
 
-    public GradeReport course(Course course, Status status) {
+    public GradeReport course(Course course) {
         this.course = course;
         return this;
     }
 
     public void setCourse(Course course) {
         this.course = course;
+    }
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public GradeReport student(Student student) {
+        this.student = student;
+        return this;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
     }
 
     @Override

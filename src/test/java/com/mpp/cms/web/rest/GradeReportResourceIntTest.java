@@ -4,6 +4,7 @@ import com.mpp.cms.CmsApp;
 
 import com.mpp.cms.domain.GradeReport;
 import com.mpp.cms.domain.Course;
+import com.mpp.cms.domain.Student;
 import com.mpp.cms.repository.GradeReportRepository;
 import com.mpp.cms.web.rest.errors.ExceptionTranslator;
 
@@ -85,6 +86,11 @@ public class GradeReportResourceIntTest {
         em.persist(course);
         em.flush();
         gradeReport.setCourse(course);
+        // Add required entity
+        Student student = StudentResourceIntTest.createEntity(em);
+        em.persist(student);
+        em.flush();
+        gradeReport.setStudent(student);
         return gradeReport;
     }
 

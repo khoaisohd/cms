@@ -10,6 +10,7 @@ import { GradeReport } from './grade-report.model';
 import { GradeReportPopupService } from './grade-report-popup.service';
 import { GradeReportService } from './grade-report.service';
 import { Course, CourseService } from '../course';
+import { Student, StudentService } from '../student';
 import { ResponseWrapper } from '../../shared';
 
 @Component({
@@ -24,11 +25,14 @@ export class GradeReportDialogComponent implements OnInit {
 
     courses: Course[];
 
+    students: Student[];
+
     constructor(
         public activeModal: NgbActiveModal,
         private alertService: AlertService,
         private gradeReportService: GradeReportService,
         private courseService: CourseService,
+        private studentService: StudentService,
         private eventManager: EventManager
     ) {
     }
@@ -38,6 +42,8 @@ export class GradeReportDialogComponent implements OnInit {
         this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
         this.courseService.query()
             .subscribe((res: ResponseWrapper) => { this.courses = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
+        this.studentService.query()
+            .subscribe((res: ResponseWrapper) => { this.students = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
     }
     clear() {
         this.activeModal.dismiss('cancel');
@@ -85,6 +91,10 @@ export class GradeReportDialogComponent implements OnInit {
     }
 
     trackCourseById(index: number, item: Course) {
+        return item.id;
+    }
+
+    trackStudentById(index: number, item: Student) {
         return item.id;
     }
 }

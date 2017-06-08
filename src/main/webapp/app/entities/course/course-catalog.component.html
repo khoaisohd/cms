@@ -5,7 +5,7 @@
             <div class="card-header" role="tab" id="headingOne">
                 <h5 class="mb-0">
                     <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                        {{course.code}}
+                        <a [routerLink]="['../course-content', course.id ]">{{course.code}}</a>
                     </a>
                 </h5>
             </div>

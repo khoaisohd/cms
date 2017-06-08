@@ -43,7 +43,9 @@ export class CourseCatalogComponent implements OnInit, OnDestroy {
     }
 
     isEnrolled(course: Course) {
-        return course.students.map(student => student.id).indexOf(this.currentAccount.id) > -1;
+        if (this.currentAccount) {
+            return course.students.map(student => student.id).indexOf(this.currentAccount.id) > -1;
+        }
     }
 
     private onError(error) {

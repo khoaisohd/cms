@@ -1,0 +1,22 @@
+<div *ngIf="course != null; else elseBlock">
+  <div>
+      <div class="jumbotron">
+          <div class="col-sm-8 mx-auto">
+              <h1>{{course.name}}</h1>
+              <div class="course-description">{{course.description}}</div>
+              <div>
+                  <div class="alert alert-info">Documents</div>
+                  <div *ngFor="let reference of references" class="course-content">
+                  </div>
+                  </div>
+              <div>
+                  <div class="alert alert-warning">Reference</div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+<ng-template #elseBlock>
+  <div>Loading...</div>
+</ng-template>

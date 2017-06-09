@@ -112,15 +112,19 @@ public class UserService {
         userRepository.save(newUser);
         log.debug("Created Information for User: {}", newUser);
 
-        // 4 dong nay la cua anh
+        createStudent(newUser.getId(), newUser.getFirstName(), newUser.getLastName());
+        return newUser;
+    }
+
+    private void createStudent(Long id, String firstName, String lastName) {
+        if (firstName == null) firstName = "First";
+        if (lastName == null) lastName = "Last";
         Student student = new Student();
-        student.setId(newUser.getId());
-        student.setFirstName(newUser.getFirstName());
-        student.setLastName(newUser.getLastName());
+        student.setId(id);
+        student.setFirstName(firstName);
+        student.setLastName(lastName);
         studentRepository.save(student);
         log.debug("Created Information for Student: {}");
-
-        return newUser;
     }
 
     public User createUser(UserDTO userDTO) {
@@ -150,12 +154,7 @@ public class UserService {
         userRepository.save(user);
         log.debug("Created Information for User: {}", user);
 
-        // 4 dong nay cua anh
-        Student student = new Student();
-        student.setId(user.getId());
-        student.setFirstName(user.getFirstName());
-        student.setLastName(user.getLastName());
-        studentRepository.save(student);
+        createStudent(user.getId(), user.getFirstName(), user.getLastName());
         return user;
     }
 
@@ -176,6 +175,7 @@ public class UserService {
             user.setLangKey(langKey);
             user.setImageUrl(imageUrl);
             log.debug("Changed Information for User: {}", user);
+
         });
     }
 

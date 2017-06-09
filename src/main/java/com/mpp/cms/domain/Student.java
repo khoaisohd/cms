@@ -84,7 +84,7 @@ public class Student implements Serializable {
     }
 
     public Set<Course> getCourses() {
-        return courses;
+        return new HashSet<>(courses);
     }
 
     public Student courses(Set<Course> courses) {
@@ -96,6 +96,10 @@ public class Student implements Serializable {
         this.courses.add(course);
         course.getStudents().add(this);
         return this;
+    }
+
+    private boolean satisfyRequirement(String course) {
+        return true;
     }
 
     public Student removeCourse(Course course) {

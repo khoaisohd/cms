@@ -1,0 +1,32 @@
+<div *ngIf="course != null; else elseBlock">
+  <div>
+      <div class="jumbotron">
+          <div class="col-sm-8 mx-auto">
+              <h1>{{course.name}}</h1>
+              <div class="course-description">{{course.description}}</div>
+              <div>
+                  <h5>Documents</h5>
+                  <ul class="list-group">
+                      <li *ngFor="let document of documents" class="list-group-item">
+                          <a target="_blank" href="{{document.url}}">{{document.name}}</a>
+                      </li>
+                  </ul>
+
+                  </div>
+              <div>
+                  <br>
+                  <h5>References</h5>
+                  <ul class="list-group">
+                      <li *ngFor="let reference of references" class="list-group-item">
+                          <a target="_blank" href="{{reference.url}}">{{reference.name}}</a>
+                      </li>
+                  </ul>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+<ng-template #elseBlock>
+  <div>Loading...</div>
+</ng-template>

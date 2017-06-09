@@ -6,3 +6,5 @@ export * from './course-delete-dialog.component';
 export * from './course-detail.component';
 export * from './course.component';
 export * from './course.route';
+export * from './course-catalog.component';
+export * from './course-content.component';

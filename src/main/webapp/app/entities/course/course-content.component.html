@@ -8,7 +8,7 @@
                   <h5>Documents</h5>
                   <ul class="list-group">
                       <li *ngFor="let document of documents" class="list-group-item">
-                          <a href="{{document.url}}">{{document.name}}</a>
+                          <a target="_blank" href="{{document.url}}">{{document.name}}</a>
                       </li>
                   </ul>
 
@@ -18,7 +18,7 @@
                   <h5>References</h5>
                   <ul class="list-group">
                       <li *ngFor="let reference of references" class="list-group-item">
-                          <a href="{{reference.url}}">{{reference.name}}</a>
+                          <a target="_blank" href="{{reference.url}}">{{reference.name}}</a>
                       </li>
                   </ul>
               </div>

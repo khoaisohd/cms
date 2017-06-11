@@ -22,7 +22,6 @@
             <th><span>Description</span></th>
             <th><span>Prerequiste</span></th>
             <th><span>Department</span></th>
-            <th><span>Student</span></th>
             <th></th>
             </tr>
             </thead>
@@ -37,11 +36,6 @@
                     <div *ngIf="course.department">
                         <a [routerLink]="['../department', course.department?.id ]" >{{course.department?.name}}</a>
                     </div>
-                </td>
-                <td>
-                    <span *ngFor="let student of course.students; let last = last">
-                            <a class="form-control-static" [routerLink]="['../student', student?.id ]">{{student.id}}</a>{{last ? '' : ', '}}
-                        </span>
                 </td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">

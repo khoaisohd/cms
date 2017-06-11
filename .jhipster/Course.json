@@ -18,14 +18,6 @@
             "otherEntityName": "department",
             "relationshipType": "many-to-one",
             "otherEntityField": "name"
-        },
-        {
-            "relationshipName": "student",
-            "otherEntityName": "student",
-            "relationshipType": "many-to-many",
-            "otherEntityField": "id",
-            "ownerSide": true,
-            "otherEntityRelationshipName": "course"
         }
     ],
     "fields": [

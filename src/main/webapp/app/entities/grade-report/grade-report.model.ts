@@ -1,9 +1,8 @@
 
-const enum Status {
-    'FAILED',
-    ' IN_PROGRESS',
-    ' PASSED'
-
+export const enum Status {
+    FAILED,
+    IN_PROGRESS,
+    PASSED
 };
 import { Course } from '../course';
 import { Student } from '../student';

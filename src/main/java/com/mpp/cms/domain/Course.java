@@ -48,12 +48,6 @@ public class Course implements Serializable {
     @ManyToOne
     private Department department;
 
-    @ManyToMany
-    @JoinTable(name = "course_student",
-               joinColumns = @JoinColumn(name="courses_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="students_id", referencedColumnName="id"))
-    private Set<Student> students = new HashSet<>();
-
     public Long getId() {
         return id;
     }
@@ -175,31 +169,6 @@ public class Course implements Serializable {
 
     public void setDepartment(Department department) {
         this.department = department;
-    }
-
-    public Set<Student> getStudents() {
-        return students;
-    }
-
-    public Course students(Set<Student> students) {
-        this.students = students;
-        return this;
-    }
-
-    public Course addStudent(Student student) {
-        this.students.add(student);
-        student.getCourses().add(this);
-        return this;
-    }
-
-    public Course removeStudent(Student student) {
-        this.students.remove(student);
-        student.getCourses().remove(this);
-        return this;
-    }
-
-    public void setStudents(Set<Student> students) {
-        this.students = students;
     }
 
     @Override

@@ -43,7 +43,7 @@ public class CourseService {
     @Transactional(readOnly = true)
     public List<Course> findAll() {
         log.debug("Request to get all Courses");
-        return courseRepository.findAllWithEagerRelationships();
+        return courseRepository.findAll();
     }
 
     /**
@@ -55,7 +55,7 @@ public class CourseService {
     @Transactional(readOnly = true)
     public Course findOne(Long id) {
         log.debug("Request to get Course : {}", id);
-        return courseRepository.findOneWithEagerRelationships(id);
+        return courseRepository.findOne(id);
     }
 
     /**

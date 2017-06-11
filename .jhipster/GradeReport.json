@@ -24,7 +24,7 @@
         {
             "fieldName": "status",
             "fieldType": "Status",
-            "fieldValues": "FAILED, IN_PROGRESS, PASSED",
+            "fieldValues": "FAILED,IN_PROGRESS,PASSED",
             "fieldValidateRules": [
                 "required"
             ]

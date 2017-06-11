@@ -26,12 +26,6 @@
                 <a [routerLink]="['/department', course.department?.id]">{{course.department?.name}}</a>
             </div>
         </dd>
-        <dt><span>Student</span></dt>
-        <dd>
-            <span *ngFor="let student of course.students; let last = last">
-                <a [routerLink]="['/student', student?.id ]">{{student.id}}</a>{{last ? '' : ', '}}
-            </span>
-        </dd>
     </dl>
 
     <button type="submit"

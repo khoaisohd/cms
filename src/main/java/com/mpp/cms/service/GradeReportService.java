@@ -6,7 +6,8 @@ import com.mpp.cms.domain.Student;
 import com.mpp.cms.domain.enumeration.Status;
 import com.mpp.cms.repository.CourseRepository;
 import com.mpp.cms.repository.GradeReportRepository;
-import com.mpp.cms.service.errors.UnsatisfiedPrerequisiteException;
+import com.mpp.cms.repository.StudentRepository;
+import com.mpp.cms.service.errors.CreateGradeReportException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,21 +19,39 @@ import java.util.Optional;
 public class GradeReportService {
     private final GradeReportRepository gradeReportRepository;
 
+    private final StudentRepository studentRepository;
+
     private final CourseRepository courseRepository;
 
-    public GradeReportService(GradeReportRepository gradeReportRepository, CourseRepository courseRepository) {
+    public GradeReportService(GradeReportRepository gradeReportRepository, CourseRepository courseRepository, StudentRepository studentRepository) {
         this.gradeReportRepository = gradeReportRepository;
         this.courseRepository = courseRepository;
+        this.studentRepository = studentRepository;
     }
 
     public GradeReport save(GradeReport gradeReport) {
-        if (!satisfyCoursePrerequisite(gradeReport.getCourse(), gradeReport.getStudent())) {
-            throw new UnsatisfiedPrerequisiteException();
-        }
+        validateGradeReport(gradeReport);
         return gradeReportRepository.save(gradeReport);
     }
 
-    private boolean satisfyCoursePrerequisite(Course course, Student student) {
+    public void validateGradeReport(GradeReport gradeReport) {
+        Course course = gradeReport.getCourse();
+        Student student = studentRepository.findOne(gradeReport.getStudent().getId());
+        if (!validateDepartment(course, student)) {
+            throw new CreateGradeReportException("You cannot register course which does not belong to your department");
+        }
+
+        if (!validateCoursePrerequisite(course, student)) {
+            throw new CreateGradeReportException("You must complete course prerequisite before registration");
+        }
+    }
+
+    private boolean validateDepartment(Course course, Student student) {
+        if (course.getDepartment() == null || student.getDepartment() == null) return true;
+        return course.getDepartment().getId().equals(student.getDepartment().getId());
+    }
+
+    private boolean validateCoursePrerequisite(Course course, Student student) {
         if (!course.hasPrerequisite()) return true;
         Course prerequisiteCourse = courseRepository.findOneByCode(course.getPrerequisite()).get();
         Optional<GradeReport> gradeReportOptional = gradeReportRepository.findOneByCourseIdAndStudentId(prerequisiteCourse.getId(), student.getId());

@@ -15,7 +15,7 @@ import { VERSION, DEBUG_INFO_ENABLED } from '../../app.constants';
     ]
 })
 export class NavbarComponent implements OnInit {
-
+    isAdmin: boolean;
     inProduction: boolean;
     isNavbarCollapsed: boolean;
     languages: any[];
@@ -38,6 +38,10 @@ export class NavbarComponent implements OnInit {
         this.profileService.getProfileInfo().subscribe((profileInfo) => {
             this.inProduction = profileInfo.inProduction;
             this.swaggerEnabled = profileInfo.swaggerEnabled;
+        });
+        this.principal.identity().then((account) => {
+            console.log(account.authorities);
+            this.isAdmin = account.authorities.indexOf('ROLE_ADMIN') > -1;
         });
     }
 

@@ -71,11 +71,10 @@ export class CourseCatalogComponent implements OnInit, OnDestroy {
             (res: GradeReport) => {
                 this.loadTakenCourseIds();
             },
-            (res: ResponseWrapper) => this.onError(res.json)
+            (res) => alert(res._body)
         );
     }
 
-    private onError(error) {
-        console.log(error);
+    private onError(res) {
     }
 }

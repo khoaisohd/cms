@@ -1,13 +1,18 @@
 package com.mpp.cms.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.mpp.cms.domain.Course;
 import com.mpp.cms.domain.GradeReport;
 
 import com.mpp.cms.repository.GradeReportRepository;
+import com.mpp.cms.service.GradeReportService;
 import com.mpp.cms.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,8 +36,11 @@ public class GradeReportResource {
 
     private final GradeReportRepository gradeReportRepository;
 
-    public GradeReportResource(GradeReportRepository gradeReportRepository) {
+    private final GradeReportService gradeReportService;
+
+    public GradeReportResource(GradeReportRepository gradeReportRepository, GradeReportService gradeReportService) {
         this.gradeReportRepository = gradeReportRepository;
+        this.gradeReportService = gradeReportService;
     }
 
     /**
@@ -44,15 +52,18 @@ public class GradeReportResource {
      */
     @PostMapping("/grade-reports")
     @Timed
-    public ResponseEntity<GradeReport> createGradeReport(@Valid @RequestBody GradeReport gradeReport) throws URISyntaxException {
+    public ResponseEntity createGradeReport(@Valid @RequestBody GradeReport gradeReport) throws URISyntaxException {
         log.debug("REST request to save GradeReport : {}", gradeReport);
-        if (gradeReport.getId() != null) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new gradeReport cannot already have an ID")).body(null);
+        try {
+            GradeReport result = gradeReportService.save(gradeReport);
+            return ResponseEntity.created(new URI("/api/grade-reports/" + result.getId()))
+                .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+                .body(result);
+        } catch (Exception exception) {
+            HttpHeaders textPlainHeaders = new HttpHeaders();
+            textPlainHeaders.setContentType(MediaType.TEXT_PLAIN);
+            return new ResponseEntity<>(exception.getMessage(), textPlainHeaders, HttpStatus.BAD_REQUEST);
         }
-        GradeReport result = gradeReportRepository.save(gradeReport);
-        return ResponseEntity.created(new URI("/api/grade-reports/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
     }
 
     /**

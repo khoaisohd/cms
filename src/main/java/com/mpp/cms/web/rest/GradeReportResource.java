@@ -1,10 +1,8 @@
 package com.mpp.cms.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import com.mpp.cms.domain.Course;
 import com.mpp.cms.domain.GradeReport;
 
-import com.mpp.cms.repository.GradeReportRepository;
 import com.mpp.cms.service.GradeReportService;
 import com.mpp.cms.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -49,7 +47,7 @@ public class GradeReportResource {
      */
     @PostMapping("/grade-reports")
     @Timed
-    public ResponseEntity createGradeReport(@Valid @RequestBody GradeReport gradeReport) throws URISyntaxException {
+    public ResponseEntity registerCourse(@Valid @RequestBody GradeReport gradeReport) throws URISyntaxException {
         log.debug("REST request to save GradeReport : {}", gradeReport);
         try {
             GradeReport result = gradeReportService.save(gradeReport);
@@ -77,7 +75,7 @@ public class GradeReportResource {
     public ResponseEntity<GradeReport> updateGradeReport(@Valid @RequestBody GradeReport gradeReport) throws URISyntaxException {
         log.debug("REST request to update GradeReport : {}", gradeReport);
         if (gradeReport.getId() == null) {
-            return createGradeReport(gradeReport);
+            return registerCourse(gradeReport);
         }
         GradeReport result = gradeReportService.save(gradeReport);
         return ResponseEntity.ok()

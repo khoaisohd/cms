@@ -43,7 +43,7 @@
             ]
         },
         {
-            "fieldName": "prerequiste",
+            "fieldName": "prerequisite",
             "fieldType": "String"
         }
     ],

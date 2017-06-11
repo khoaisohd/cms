@@ -34,8 +34,8 @@ public class Course implements Serializable {
     @Column(name = "description", nullable = false)
     private String description;
 
-    @Column(name = "prerequiste")
-    private String prerequiste;
+    @Column(name = "prerequisite")
+    private String prerequisite;
 
     @OneToMany(mappedBy = "course")
     @JsonIgnore
@@ -95,17 +95,17 @@ public class Course implements Serializable {
         this.description = description;
     }
 
-    public String getPrerequiste() {
-        return prerequiste;
+    public String getPrerequisite() {
+        return prerequisite;
     }
 
-    public Course prerequiste(String prerequiste) {
-        this.prerequiste = prerequiste;
+    public Course prerequisite(String prerequisite) {
+        this.prerequisite = prerequisite;
         return this;
     }
 
-    public void setPrerequiste(String prerequiste) {
-        this.prerequiste = prerequiste;
+    public void setPrerequisite(String prerequisite) {
+        this.prerequisite = prerequisite;
     }
 
     public Set<Reference> getReferences() {
@@ -198,7 +198,7 @@ public class Course implements Serializable {
             ", code='" + getCode() + "'" +
             ", name='" + getName() + "'" +
             ", description='" + getDescription() + "'" +
-            ", prerequiste='" + getPrerequiste() + "'" +
+            ", prerequisite='" + getPrerequisite() + "'" +
             "}";
     }
 }

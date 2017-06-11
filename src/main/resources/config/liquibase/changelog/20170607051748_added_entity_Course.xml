@@ -34,7 +34,7 @@
                 <constraints nullable="false" />
             </column>
 
-            <column name="prerequiste" type="varchar(255)">
+            <column name="prerequisite" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
 

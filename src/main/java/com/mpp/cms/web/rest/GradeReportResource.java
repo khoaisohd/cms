@@ -34,12 +34,9 @@ public class GradeReportResource {
 
     private static final String ENTITY_NAME = "gradeReport";
 
-    private final GradeReportRepository gradeReportRepository;
-
     private final GradeReportService gradeReportService;
 
-    public GradeReportResource(GradeReportRepository gradeReportRepository, GradeReportService gradeReportService) {
-        this.gradeReportRepository = gradeReportRepository;
+    public GradeReportResource(GradeReportService gradeReportService) {
         this.gradeReportService = gradeReportService;
     }
 
@@ -82,7 +79,7 @@ public class GradeReportResource {
         if (gradeReport.getId() == null) {
             return createGradeReport(gradeReport);
         }
-        GradeReport result = gradeReportRepository.save(gradeReport);
+        GradeReport result = gradeReportService.save(gradeReport);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, gradeReport.getId().toString()))
             .body(result);
@@ -97,7 +94,7 @@ public class GradeReportResource {
     @Timed
     public List<GradeReport> getAllGradeReports() {
         log.debug("REST request to get all GradeReports");
-        return gradeReportRepository.findAll();
+        return gradeReportService.findAll();
     }
 
     /**
@@ -110,7 +107,7 @@ public class GradeReportResource {
     @Timed
     public ResponseEntity<GradeReport> getGradeReport(@PathVariable Long id) {
         log.debug("REST request to get GradeReport : {}", id);
-        GradeReport gradeReport = gradeReportRepository.findOne(id);
+        GradeReport gradeReport = gradeReportService.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(gradeReport));
     }
 
@@ -124,7 +121,7 @@ public class GradeReportResource {
     @Timed
     public ResponseEntity<Void> deleteGradeReport(@PathVariable Long id) {
         log.debug("REST request to delete GradeReport : {}", id);
-        gradeReportRepository.delete(id);
+        gradeReportService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 }

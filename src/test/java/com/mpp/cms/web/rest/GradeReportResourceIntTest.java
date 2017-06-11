@@ -69,7 +69,7 @@ public class GradeReportResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        GradeReportResource gradeReportResource = new GradeReportResource(gradeReportRepository, gradeReportService);
+        GradeReportResource gradeReportResource = new GradeReportResource(gradeReportService);
         this.restGradeReportMockMvc = MockMvcBuilders.standaloneSetup(gradeReportResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

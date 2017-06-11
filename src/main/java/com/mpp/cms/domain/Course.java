@@ -99,6 +99,10 @@ public class Course implements Serializable {
         return prerequisite;
     }
 
+    public boolean hasPrerequisite() {
+        return prerequisite != null && !prerequisite.isEmpty();
+    }
+
     public Course prerequisite(String prerequisite) {
         this.prerequisite = prerequisite;
         return this;

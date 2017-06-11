@@ -9,6 +9,8 @@ import com.mpp.cms.repository.GradeReportRepository;
 import com.mpp.cms.service.errors.UnsatisfiedPrerequisiteException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -31,9 +33,21 @@ public class GradeReportService {
     }
 
     private boolean satisfyCoursePrerequisite(Course course, Student student) {
-        if (course.getPrerequisite().isEmpty()) return true;
+        if (!course.hasPrerequisite()) return true;
         Course prerequisiteCourse = courseRepository.findOneByCode(course.getPrerequisite()).get();
         Optional<GradeReport> gradeReportOptional = gradeReportRepository.findOneByCourseIdAndStudentId(prerequisiteCourse.getId(), student.getId());
         return gradeReportOptional.isPresent() &&  gradeReportOptional.get().getStatus() == Status.PASSED;
+    }
+
+    public List<GradeReport> findAll() {
+        return gradeReportRepository.findAll();
+    }
+
+    public GradeReport findOne(Long id) {
+        return gradeReportRepository.findOne(id);
+    }
+
+    public void delete(Long id) {
+        gradeReportRepository.delete(id);
     }
 }

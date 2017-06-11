@@ -2,8 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Rx';
 import { ResponseWrapper, Principal } from '../../shared';
 
-import { Course } from './course.model';
-import { CourseService } from './course.service';
+import { Course, CourseService } from './';
+import { GradeReportService, GradeReport, Status } from '../grade-report';
 import { Student } from '../student';
 
 @Component({
@@ -13,15 +13,17 @@ import { Student } from '../student';
 })
 export class CourseCatalogComponent implements OnInit, OnDestroy {
     courses: Course[];
+    takenCourseIds: Number[] = [];
     currentAccount: any;
 
     constructor(
         private courseService: CourseService,
-        private principal: Principal
+        private principal: Principal,
+        private gradeReportService: GradeReportService
     ) {
     }
 
-    loadAll() {
+    loadAllCourses() {
         this.courseService.query().subscribe(
             (res: ResponseWrapper) => {
                 this.courses = res.json;
@@ -29,39 +31,50 @@ export class CourseCatalogComponent implements OnInit, OnDestroy {
             (res: ResponseWrapper) => this.onError(res.json)
         );
     }
+
+    loadTakenCourseIds() {
+        this.gradeReportService.query({id: this.currentAccount.id}).subscribe(
+            (res: ResponseWrapper) => {
+                this.takenCourseIds = res.json.map(report => report.course.id);
+            },
+            (res: ResponseWrapper) => this.onError(res.json)
+        );
+    }
+
     ngOnInit() {
-        this.loadAll();
         this.principal.identity().then((account) => {
             this.currentAccount = account;
+            this.loadAllCourses();
+            this.loadTakenCourseIds();
         });
     }
 
     ngOnDestroy() {
     }
 
-    trackId(index: number, item: Course) {
-        return item.id;
-    }
-
     isEnrolled(course: Course) {
-        if (this.currentAccount) {
-            return course.students.map(student => student.id).indexOf(this.currentAccount.id) > -1;
-        }
+        return this.takenCourseIds.indexOf(course.id) > -1;
     }
 
     enroll(course: Course): void {
         const student: Student = {
             id: this.currentAccount.id
         };
-        course.students.push(student);
-        this.courseService.update(course).subscribe(
-            (res: ResponseWrapper) => {
-                console.log(res);
+
+        const gradeReport: GradeReport = {
+            course: course,
+            student: student,
+            status: Status.IN_PROGRESS
+        };
+
+        this.gradeReportService.create(gradeReport).subscribe(
+            (res: GradeReport) => {
+                this.loadTakenCourseIds();
             },
-            (res: ResponseWrapper) => console.log(res)
+            (res) => alert(res._body)
         );
     }
 
-    private onError(error) {
+    private onError(res) {
     }
 }

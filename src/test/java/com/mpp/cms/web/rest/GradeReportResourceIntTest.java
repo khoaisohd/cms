@@ -6,6 +6,7 @@ import com.mpp.cms.domain.GradeReport;
 import com.mpp.cms.domain.Course;
 import com.mpp.cms.domain.Student;
 import com.mpp.cms.repository.GradeReportRepository;
+import com.mpp.cms.service.GradeReportService;
 import com.mpp.cms.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -47,6 +48,9 @@ public class GradeReportResourceIntTest {
     private GradeReportRepository gradeReportRepository;
 
     @Autowired
+    private GradeReportService gradeReportService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -65,7 +69,7 @@ public class GradeReportResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        GradeReportResource gradeReportResource = new GradeReportResource(gradeReportRepository);
+        GradeReportResource gradeReportResource = new GradeReportResource(gradeReportService);
         this.restGradeReportMockMvc = MockMvcBuilders.standaloneSetup(gradeReportResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

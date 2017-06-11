@@ -1,13 +1,18 @@
 package com.mpp.cms.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.mpp.cms.domain.Course;
 import com.mpp.cms.domain.GradeReport;
 
 import com.mpp.cms.repository.GradeReportRepository;
+import com.mpp.cms.service.GradeReportService;
 import com.mpp.cms.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,10 +34,10 @@ public class GradeReportResource {
 
     private static final String ENTITY_NAME = "gradeReport";
 
-    private final GradeReportRepository gradeReportRepository;
+    private final GradeReportService gradeReportService;
 
-    public GradeReportResource(GradeReportRepository gradeReportRepository) {
-        this.gradeReportRepository = gradeReportRepository;
+    public GradeReportResource(GradeReportService gradeReportService) {
+        this.gradeReportService = gradeReportService;
     }
 
     /**
@@ -44,15 +49,18 @@ public class GradeReportResource {
      */
     @PostMapping("/grade-reports")
     @Timed
-    public ResponseEntity<GradeReport> createGradeReport(@Valid @RequestBody GradeReport gradeReport) throws URISyntaxException {
+    public ResponseEntity createGradeReport(@Valid @RequestBody GradeReport gradeReport) throws URISyntaxException {
         log.debug("REST request to save GradeReport : {}", gradeReport);
-        if (gradeReport.getId() != null) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new gradeReport cannot already have an ID")).body(null);
+        try {
+            GradeReport result = gradeReportService.save(gradeReport);
+            return ResponseEntity.created(new URI("/api/grade-reports/" + result.getId()))
+                .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+                .body(result);
+        } catch (Exception exception) {
+            HttpHeaders textPlainHeaders = new HttpHeaders();
+            textPlainHeaders.setContentType(MediaType.TEXT_PLAIN);
+            return new ResponseEntity<>(exception.getMessage(), textPlainHeaders, HttpStatus.BAD_REQUEST);
         }
-        GradeReport result = gradeReportRepository.save(gradeReport);
-        return ResponseEntity.created(new URI("/api/grade-reports/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
     }
 
     /**
@@ -71,7 +79,7 @@ public class GradeReportResource {
         if (gradeReport.getId() == null) {
             return createGradeReport(gradeReport);
         }
-        GradeReport result = gradeReportRepository.save(gradeReport);
+        GradeReport result = gradeReportService.save(gradeReport);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, gradeReport.getId().toString()))
             .body(result);
@@ -86,7 +94,7 @@ public class GradeReportResource {
     @Timed
     public List<GradeReport> getAllGradeReports() {
         log.debug("REST request to get all GradeReports");
-        return gradeReportRepository.findAll();
+        return gradeReportService.findAll();
     }
 
     /**
@@ -99,7 +107,7 @@ public class GradeReportResource {
     @Timed
     public ResponseEntity<GradeReport> getGradeReport(@PathVariable Long id) {
         log.debug("REST request to get GradeReport : {}", id);
-        GradeReport gradeReport = gradeReportRepository.findOne(id);
+        GradeReport gradeReport = gradeReportService.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(gradeReport));
     }
 
@@ -113,7 +121,7 @@ public class GradeReportResource {
     @Timed
     public ResponseEntity<Void> deleteGradeReport(@PathVariable Long id) {
         log.debug("REST request to delete GradeReport : {}", id);
-        gradeReportRepository.delete(id);
+        gradeReportService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 }

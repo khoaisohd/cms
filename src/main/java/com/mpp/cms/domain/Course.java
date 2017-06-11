@@ -34,8 +34,8 @@ public class Course implements Serializable {
     @Column(name = "description", nullable = false)
     private String description;
 
-    @Column(name = "prerequiste")
-    private String prerequiste;
+    @Column(name = "prerequisite")
+    private String prerequisite;
 
     @OneToMany(mappedBy = "course")
     @JsonIgnore
@@ -47,12 +47,6 @@ public class Course implements Serializable {
 
     @ManyToOne
     private Department department;
-
-    @ManyToMany
-    @JoinTable(name = "course_student",
-               joinColumns = @JoinColumn(name="courses_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="students_id", referencedColumnName="id"))
-    private Set<Student> students = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -101,17 +95,21 @@ public class Course implements Serializable {
         this.description = description;
     }
 
-    public String getPrerequiste() {
-        return prerequiste;
+    public String getPrerequisite() {
+        return prerequisite;
     }
 
-    public Course prerequiste(String prerequiste) {
-        this.prerequiste = prerequiste;
+    public boolean hasPrerequisite() {
+        return prerequisite != null && !prerequisite.isEmpty();
+    }
+
+    public Course prerequisite(String prerequisite) {
+        this.prerequisite = prerequisite;
         return this;
     }
 
-    public void setPrerequiste(String prerequiste) {
-        this.prerequiste = prerequiste;
+    public void setPrerequisite(String prerequisite) {
+        this.prerequisite = prerequisite;
     }
 
     public Set<Reference> getReferences() {
@@ -177,31 +175,6 @@ public class Course implements Serializable {
         this.department = department;
     }
 
-    public Set<Student> getStudents() {
-        return students;
-    }
-
-    public Course students(Set<Student> students) {
-        this.students = students;
-        return this;
-    }
-
-    public Course addStudent(Student student) {
-        this.students.add(student);
-        student.getCourses().add(this);
-        return this;
-    }
-
-    public Course removeStudent(Student student) {
-        this.students.remove(student);
-        student.getCourses().remove(this);
-        return this;
-    }
-
-    public void setStudents(Set<Student> students) {
-        this.students = students;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -229,7 +202,7 @@ public class Course implements Serializable {
             ", code='" + getCode() + "'" +
             ", name='" + getName() + "'" +
             ", description='" + getDescription() + "'" +
-            ", prerequiste='" + getPrerequiste() + "'" +
+            ", prerequisite='" + getPrerequisite() + "'" +
             "}";
     }
 }

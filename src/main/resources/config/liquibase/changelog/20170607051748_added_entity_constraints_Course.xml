@@ -14,16 +14,5 @@
                                  referencedColumnNames="id"
                                  referencedTableName="department"/>
 
-        <addForeignKeyConstraint baseColumnNames="courses_id"
-                                 baseTableName="course_student"
-                                 constraintName="fk_course_student_courses_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="course"/>
-        <addForeignKeyConstraint baseColumnNames="students_id"
-                                 baseTableName="course_student"
-                                 constraintName="fk_course_student_students_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="student"/>
-        
     </changeSet>
 </databaseChangeLog>

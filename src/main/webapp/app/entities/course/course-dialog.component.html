@@ -49,9 +49,9 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="form-control-label" for="field_prerequiste">Prerequiste</label>
-            <input type="text" class="form-control" name="prerequiste" id="field_prerequiste"
-                [(ngModel)]="course.prerequiste"
+            <label class="form-control-label" for="field_prerequisite">Prerequisite</label>
+            <input type="text" class="form-control" name="prerequisite" id="field_prerequisite"
+                [(ngModel)]="course.prerequisite"
              />
         </div>
 
@@ -60,12 +60,6 @@
             <select class="form-control" id="field_department" name="department" [(ngModel)]="course.department" >
                 <option [ngValue]="null"></option>
                 <option [ngValue]="departmentOption.id === course.department?.id ? course.department : departmentOption" *ngFor="let departmentOption of departments; trackBy: trackDepartmentById">{{departmentOption.name}}</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="field_student">Student</label>
-            <select class="form-control" id="field_student" multiple name="student" [(ngModel)]="course.students">
-                <option [ngValue]="getSelected(course.students, studentOption)" *ngFor="let studentOption of students; trackBy: trackStudentById">{{studentOption.id}}</option>
             </select>
         </div>
     </div>

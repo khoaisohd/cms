@@ -10,7 +10,6 @@ import { Course } from './course.model';
 import { CoursePopupService } from './course-popup.service';
 import { CourseService } from './course.service';
 import { Department, DepartmentService } from '../department';
-import { Student, StudentService } from '../student';
 import { ResponseWrapper } from '../../shared';
 
 @Component({
@@ -25,14 +24,11 @@ export class CourseDialogComponent implements OnInit {
 
     departments: Department[];
 
-    students: Student[];
-
     constructor(
         public activeModal: NgbActiveModal,
         private alertService: AlertService,
         private courseService: CourseService,
         private departmentService: DepartmentService,
-        private studentService: StudentService,
         private eventManager: EventManager
     ) {
     }
@@ -42,8 +38,6 @@ export class CourseDialogComponent implements OnInit {
         this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
         this.departmentService.query()
             .subscribe((res: ResponseWrapper) => { this.departments = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
-        this.studentService.query()
-            .subscribe((res: ResponseWrapper) => { this.students = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
     }
     clear() {
         this.activeModal.dismiss('cancel');
@@ -92,21 +86,6 @@ export class CourseDialogComponent implements OnInit {
 
     trackDepartmentById(index: number, item: Department) {
         return item.id;
-    }
-
-    trackStudentById(index: number, item: Student) {
-        return item.id;
-    }
-
-    getSelected(selectedVals: Array<any>, option: any) {
-        if (selectedVals) {
-            for (let i = 0; i < selectedVals.length; i++) {
-                if (option.id === selectedVals[i].id) {
-                    return selectedVals[i];
-                }
-            }
-        }
-        return option;
     }
 }
 

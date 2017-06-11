@@ -47,8 +47,8 @@ public class CourseResourceIntTest {
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
-    private static final String DEFAULT_PREREQUISTE = "AAAAAAAAAA";
-    private static final String UPDATED_PREREQUISTE = "BBBBBBBBBB";
+    private static final String DEFAULT_PREREQUISITE = "AAAAAAAAAA";
+    private static final String UPDATED_PREREQUISITE = "BBBBBBBBBB";
 
     @Autowired
     private CourseRepository courseRepository;
@@ -93,7 +93,7 @@ public class CourseResourceIntTest {
             .code(DEFAULT_CODE)
             .name(DEFAULT_NAME)
             .description(DEFAULT_DESCRIPTION)
-            .prerequiste(DEFAULT_PREREQUISTE);
+            .prerequisite(DEFAULT_PREREQUISITE);
         return course;
     }
 
@@ -120,7 +120,7 @@ public class CourseResourceIntTest {
         assertThat(testCourse.getCode()).isEqualTo(DEFAULT_CODE);
         assertThat(testCourse.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testCourse.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
-        assertThat(testCourse.getPrerequiste()).isEqualTo(DEFAULT_PREREQUISTE);
+        assertThat(testCourse.getPrerequisite()).isEqualTo(DEFAULT_PREREQUISITE);
     }
 
     @Test
@@ -210,7 +210,7 @@ public class CourseResourceIntTest {
             .andExpect(jsonPath("$.[*].code").value(hasItem(DEFAULT_CODE.toString())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
-            .andExpect(jsonPath("$.[*].prerequiste").value(hasItem(DEFAULT_PREREQUISTE.toString())));
+            .andExpect(jsonPath("$.[*].prerequisite").value(hasItem(DEFAULT_PREREQUISITE.toString())));
     }
 
     @Test
@@ -227,7 +227,7 @@ public class CourseResourceIntTest {
             .andExpect(jsonPath("$.code").value(DEFAULT_CODE.toString()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
-            .andExpect(jsonPath("$.prerequiste").value(DEFAULT_PREREQUISTE.toString()));
+            .andExpect(jsonPath("$.prerequisite").value(DEFAULT_PREREQUISITE.toString()));
     }
 
     @Test
@@ -252,7 +252,7 @@ public class CourseResourceIntTest {
             .code(UPDATED_CODE)
             .name(UPDATED_NAME)
             .description(UPDATED_DESCRIPTION)
-            .prerequiste(UPDATED_PREREQUISTE);
+            .prerequisite(UPDATED_PREREQUISITE);
 
         restCourseMockMvc.perform(put("/api/courses")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -266,7 +266,7 @@ public class CourseResourceIntTest {
         assertThat(testCourse.getCode()).isEqualTo(UPDATED_CODE);
         assertThat(testCourse.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testCourse.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
-        assertThat(testCourse.getPrerequiste()).isEqualTo(UPDATED_PREREQUISTE);
+        assertThat(testCourse.getPrerequisite()).isEqualTo(UPDATED_PREREQUISITE);
     }
 
     @Test

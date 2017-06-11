@@ -13,6 +13,7 @@ import { Student } from '../student';
 })
 export class CourseCatalogComponent implements OnInit, OnDestroy {
     courses: Course[];
+    allCourses: Course[];
     takenCourseIds: Number[] = [];
     currentAccount: any;
 
@@ -27,6 +28,7 @@ export class CourseCatalogComponent implements OnInit, OnDestroy {
         this.courseService.query().subscribe(
             (res: ResponseWrapper) => {
                 this.courses = res.json;
+                this.allCourses = this.courses;
             },
             (res: ResponseWrapper) => this.onError(res.json)
         );
@@ -73,6 +75,12 @@ export class CourseCatalogComponent implements OnInit, OnDestroy {
             },
             (res) => alert(res._body)
         );
+    }
+
+    showRegisteredCourses() {
+        this.courses = this.allCourses.filter((course: Course) => {
+            return this.takenCourseIds.indexOf(course.id) > -1;
+        });
     }
 
     private onError(res) {

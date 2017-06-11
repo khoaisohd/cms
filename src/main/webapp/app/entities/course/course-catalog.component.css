@@ -7,3 +7,9 @@
 .course-content {
     margin-top: 15px;
 }
+
+.show-registered-courses {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+}

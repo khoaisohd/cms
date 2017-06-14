@@ -16,6 +16,7 @@ export class CourseCatalogComponent implements OnInit, OnDestroy {
     allCourses: Course[];
     takenCourseIds: Number[] = [];
     currentAccount: any;
+    gradeReports: GradeReport[] = [];
 
     constructor(
         private courseService: CourseService,
@@ -35,8 +36,9 @@ export class CourseCatalogComponent implements OnInit, OnDestroy {
     }
 
     loadTakenCourseIds() {
-        this.gradeReportService.query({id: this.currentAccount.id}).subscribe(
+        this.gradeReportService.query({student_id: this.currentAccount.id}).subscribe(
             (res: ResponseWrapper) => {
+                this.gradeReports = res.json;
                 this.takenCourseIds = res.json.map(report => report.course.id);
             },
             (res: ResponseWrapper) => this.onError(res.json)
@@ -58,6 +60,40 @@ export class CourseCatalogComponent implements OnInit, OnDestroy {
         return this.takenCourseIds.indexOf(course.id) > -1;
     }
 
+    getBadgeClass(course: Course): String {
+        for (let i = 0; i < this.gradeReports.length; i++) {
+            const gradeReport = this.gradeReports[i];
+            if (gradeReport.course.id == course.id) {
+                switch (gradeReport.status.toString()) {
+                    case 'FAILED':
+                        return 'badge-error';
+                    case 'IN_PROGRESS':
+                        return 'badge-info';
+                    case 'PASSED':
+                        return 'badge-success';
+                }
+            }
+        }
+        return '';
+    }
+
+    getBadgeText(course: Course): String {
+        for (let i = 0; i < this.gradeReports.length; i++) {
+            const gradeReport = this.gradeReports[i];
+            if (gradeReport.course.id == course.id) {
+                switch (gradeReport.status.toString()) {
+                    case 'FAILED':
+                        return 'Failed';
+                    case 'IN_PROGRESS':
+                        return 'Enrolled';
+                    case 'PASSED':
+                        return 'Passed';
+                }
+            }
+        }
+        return '';
+    }
+
     enroll(course: Course): void {
         const student: Student = {
             id: this.currentAccount.id
@@ -75,6 +111,14 @@ export class CourseCatalogComponent implements OnInit, OnDestroy {
             },
             (res) => alert(res._body)
         );
+    }
+
+    getPrerequisite(course: Course): String {
+        if (course.prerequisite) {
+            return `(Prerequisite: ${course.prerequisite})`
+        } else {
+            return "";
+        }
     }
 
     showRegisteredCourses() {

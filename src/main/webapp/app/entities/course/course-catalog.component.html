@@ -6,7 +6,7 @@
             <div class="card-header" role="tab" id="headingOne">
                 <h5 class="mb-0">
                     <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                        <a [routerLink]="['../course-content', course.id ]">{{course.code}} - {{course.name}}</a>
+                        <a [routerLink]="['../course-content', course.id ]">{{course.code}} - {{course.name}} - {{course.department.name}} {{getPrerequisite(course)}}</a>
                     </a>
                 </h5>
             </div>
@@ -16,7 +16,7 @@
                     {{course.description}}<br>
                 </div>
                 <div *ngIf="isEnrolled(course); else elseBlock">
-                    <span class="badge badge-success course-enrolled">Enrolled</span>
+                    <span class="badge {{getBadgeClass(course)}} course-enrolled">{{getBadgeText(course)}}</span>
                 </div>
 
                 <ng-template #elseBlock>
